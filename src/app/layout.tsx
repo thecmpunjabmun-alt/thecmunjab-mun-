@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,6 +8,13 @@ import ClientLogic from "@/components/ClientLogic";
 export const metadata: Metadata = {
   title: "Turn Your Ambition into Achievement | CM Punjab MUN",
   description: "Join CM Punjab Model United Nations - Pakistan's premier youth leadership and empowerment program.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // Prevents input zoom bug on iOS Safari
 };
 
 export default function RootLayout({
