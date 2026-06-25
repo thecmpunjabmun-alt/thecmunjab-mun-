@@ -3719,15 +3719,19 @@ select:focus {
 /* ===== PRELOADER STYLES ===== */
 .preloader-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    max-width: 100%;
     background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999999;
+    overflow: hidden;
+    touch-action: none; /* Prevents dragging and elastic scroll on mobile */
+    box-sizing: border-box;
     transition: opacity 0.5s ease-out;
 }
 
@@ -3743,8 +3747,10 @@ select:focus {
     justify-content: center;
     text-align: center;
     width: 100%;
+    max-width: 100vw;
     padding: 0 20px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .logo-container {
@@ -3753,12 +3759,11 @@ select:focus {
     justify-content: center;
     align-items: center;
     margin-bottom: 1.5rem;
-    margin-left: 20px;
-    /* Adjusting for intrinsic image offset */
 }
 
 .pulse-logo {
     width: 240px;
+    max-width: 80vw;
     height: auto;
     animation: pulse-animation 2s ease-in-out infinite;
     z-index: 2;
