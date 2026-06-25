@@ -3809,3 +3809,11 @@ select:focus {
         opacity: 0.9;
     }
 }
+
+/* Anti-Forced Dark Mode Hack */
+@media (prefers-color-scheme: dark) {
+    :root { color-scheme: light; }
+    body { background-color: #dde1da !important; color: #1a1a1a !important; }
+    .preloader-overlay, .feature-card, .note-card, .chat-widget { background-color: #ffffff !important; color: #1a1a1a !important; }
+    * { filter: none !important; }
+}
