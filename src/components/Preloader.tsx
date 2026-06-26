@@ -37,7 +37,7 @@ export default function Preloader() {
         
         {/* Logo */}
         <div className="logo-container">
-          <img src="/logo-Photoroom.png" alt="CM Punjab MUN Initiative" className="pulse-logo" />
+          <img src="/logo-Photoroom.webp" alt="CM Punjab MUN Initiative" className="pulse-logo" />
         </div>
         
       </div>
