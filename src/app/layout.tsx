@@ -6,8 +6,47 @@ import Chatbot from "@/components/Chatbot";
 import ClientLogic from "@/components/ClientLogic";
 
 export const metadata: Metadata = {
-  title: "Turn Your Ambition into Achievement | CM Punjab MUN",
-  description: "Join CM Punjab Model United Nations - Pakistan's premier youth leadership and empowerment program.",
+  title: {
+    default: "CM Punjab MUN | Turn Your Ambition into Achievement",
+    template: "%s | CM Punjab MUN",
+  },
+  description: "Join CM Punjab Model United Nations - Pakistan's premier government-sponsored youth leadership and empowerment program. Participate in debates, training, and diplomacy.",
+  keywords: ["MUN", "Model United Nations", "Punjab", "Chief Minister Punjab", "Youth Leadership", "Debate", "Diplomacy", "Maryam Nawaz Sharif", "Youth Empowerment", "Pakistan MUN"],
+  authors: [{ name: "CM Punjab MUN" }],
+  creator: "CM Punjab MUN",
+  openGraph: {
+    type: "website",
+    locale: "en_PK",
+    url: "https://cmpunjabmun.com", // Adjust to the actual domain if different
+    title: "CM Punjab MUN | Turn Your Ambition into Achievement",
+    description: "Pakistan's premier government-sponsored youth leadership and empowerment program.",
+    siteName: "CM Punjab MUN",
+    images: [
+      {
+        url: "/hero-banner.webp",
+        width: 1200,
+        height: 630,
+        alt: "CM Punjab MUN",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CM Punjab MUN | Turn Your Ambition into Achievement",
+    description: "Pakistan's premier government-sponsored youth leadership and empowerment program.",
+    images: ["/hero-banner.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export const viewport: Viewport = {

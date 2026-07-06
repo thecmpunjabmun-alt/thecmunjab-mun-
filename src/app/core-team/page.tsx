@@ -1,5 +1,6 @@
 'use client';
 
+
 export default function CoreTeam() {
     return (
         <main>
@@ -63,16 +64,7 @@ export default function CoreTeam() {
                         <h3>Muhammad Rooman Saadat</h3>
                         <span className="leader-role">Director/President & CEO</span>
                     </div>
-                    <div className="leader-card fade-up">
-                        <img
-                            src="/noor-fatima.webp"
-                            alt="Noor Fatima"
-                            className="leader-photo"
-                            onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=Noor+Fatima&background=random&size=150' }}
-                        />
-                        <h3>Noor Fatima</h3>
-                        <span className="leader-role">Chief Operating Officer</span>
-                    </div>
+
                 </div>
             </section>
         </main>

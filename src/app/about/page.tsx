@@ -1,3 +1,14 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description: 'Learn about the mission, vision, and core values of the CM Punjab Model United Nations initiative. Discover how we empower the youth of Punjab.',
+  openGraph: {
+    title: 'CM Punjab MUN | About Us',
+    description: 'Learn about the mission, vision, and core values of the CM Punjab Model United Nations initiative.',
+    url: 'https://cmpunjabmun.com/about',
+  },
+};
 
 export default function Page() {
     return (

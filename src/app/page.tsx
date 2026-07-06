@@ -1,5 +1,15 @@
 import Preloader from '../components/Preloader';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'Welcome to CM Punjab Model United Nations. A vision for youth empowerment, bridging the gap between academic learning and real-world policymaking.',
+  openGraph: {
+    title: 'CM Punjab MUN | Home',
+    description: 'Welcome to CM Punjab Model United Nations. A vision for youth empowerment, bridging the gap between academic learning and real-world policymaking.',
+    url: 'https://cmpunjabmun.com/',
+  },
+};
 export default function Page() {
     return (
         <main>

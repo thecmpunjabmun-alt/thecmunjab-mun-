@@ -68,10 +68,16 @@ export default function Chatbot() {
     setIsTyping(true);
 
     try {
+      let fingerprint = localStorage.getItem('munChatFingerprint');
+      if (!fingerprint) {
+        fingerprint = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('munChatFingerprint', fingerprint);
+      }
+
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, fingerprint }),
       });
       const data = await res.json();
       

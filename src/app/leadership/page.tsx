@@ -1,5 +1,6 @@
 "use client";
 
+
 export default function Leadership() {
     return (
         <main>
@@ -70,7 +71,7 @@ export default function Leadership() {
                         <img src="/rehan-abid.webp" alt="Rehan Abid" className="leader-photo"
                             onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=Rehan+Abid&background=random&size=150'; }} />
                         <h3>Rehan Abid</h3>
-                        <span className="leader-role">Chief Officer</span>
+                        <span className="leader-role">Chief Coordination Officer</span>
                         <div className="deputy-list">
                             <span className="deputy-list-title">Deputy Officers</span>
                             <ul>
@@ -86,7 +87,7 @@ export default function Leadership() {
                         <img src="/arfa-afzal.webp" alt="Arfa Afzal" className="leader-photo"
                             onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=Arfa+Afzal&background=random&size=150'; }} />
                         <h3>Arfa Afzal</h3>
-                        <span className="leader-role">Chief Officer</span>
+                        <span className="leader-role">Chief Human Resource Officer</span>
                         <div className="deputy-list">
                             <span className="deputy-list-title">Deputy Officers</span>
                             <ul>
@@ -119,7 +120,7 @@ export default function Leadership() {
                         <img src="/m-tehfiz-hasan.webp" alt="M. Tehfiz Hasan" className="leader-photo"
                             onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=M+Tehfiz+Hasan&background=random&size=150'; }} />
                         <h3>M. Tehfiz Hasan</h3>
-                        <span className="leader-role">Chief Officer</span>
+                        <span className="leader-role">Chief Outreach Officer</span>
                         <div className="deputy-list">
                             <span className="deputy-list-title">Deputy Officers</span>
                             <ul>

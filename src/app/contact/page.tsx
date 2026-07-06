@@ -1,5 +1,40 @@
+'use client';
+import { useState, FormEvent } from 'react';
 
 export default function Page() {
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setStatus('loading');
+        
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to send message');
+            }
+
+            setStatus('success');
+            form.reset();
+        } catch (error: any) {
+            console.error('Submission error:', error);
+            setErrorMessage(error.message);
+            setStatus('error');
+        }
+    };
+
     return (
         <main>
 
@@ -53,27 +88,42 @@ export default function Page() {
 
                     <div className="contact-form-container slide-right">
                         <h3>Send us a Message</h3>
-                        <form id="contactForm" action="#" method="POST">
+                        
+                        {status === 'success' && (
+                            <div style={{ backgroundColor: '#d4edda', color: '#155724', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #c3e6cb' }}>
+                                <i className="fas fa-check-circle" style={{ marginRight: '10px' }}></i>
+                                Your message has been sent successfully! Our team will get back to you soon.
+                            </div>
+                        )}
+                        
+                        {status === 'error' && (
+                            <div style={{ backgroundColor: '#f8d7da', color: '#721c24', padding: '15px', borderRadius: '8px', marginBottom: '20px', border: '1px solid #f5c6cb' }}>
+                                <i className="fas fa-exclamation-circle" style={{ marginRight: '10px' }}></i>
+                                {errorMessage}
+                            </div>
+                        )}
+
+                        <form id="contactForm" onSubmit={handleSubmit}>
 
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="firstName">First Name</label>
-                                    <input type="text" id="firstName" className="form-control" placeholder="Ali" required minLength={2} maxLength={50} pattern="^[A-Za-z\s\-']+$" title="Only letters, spaces, hyphens, and apostrophes are allowed (2-50 characters)" />
+                                    <input type="text" id="firstName" name="firstName" className="form-control" placeholder="Ali" required minLength={2} maxLength={50} pattern="^[A-Za-z\s\-']+$" title="Only letters, spaces, hyphens, and apostrophes are allowed (2-50 characters)" />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="lastName">Last Name</label>
-                                    <input type="text" id="lastName" className="form-control" placeholder="Khan" required minLength={2} maxLength={50} pattern="^[A-Za-z\s\-']+$" title="Only letters, spaces, hyphens, and apostrophes are allowed (2-50 characters)" />
+                                    <input type="text" id="lastName" name="lastName" className="form-control" placeholder="Khan" required minLength={2} maxLength={50} pattern="^[A-Za-z\s\-']+$" title="Only letters, spaces, hyphens, and apostrophes are allowed (2-50 characters)" />
                                 </div>
                             </div>
 
                             <div className="form-row">
                                 <div className="form-group">
                                     <label htmlFor="email">Email Address</label>
-                                    <input type="email" id="email" className="form-control" placeholder="ali.khan@example.com" required pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address" />
+                                    <input type="email" id="email" name="email" className="form-control" placeholder="ali.khan@example.com" required pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address" />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="district">Your District</label>
-                                    <select id="district" className="form-control" required defaultValue="">
+                                    <select id="district" name="district" className="form-control" required defaultValue="">
                                         <option value="" disabled>Select District</option>
                                         <optgroup label="Lahore Division">
                                             <option value="lahore">Lahore</option>
@@ -136,15 +186,17 @@ export default function Page() {
 
                             <div className="form-group">
                                 <label htmlFor="subject">Subject</label>
-                                <input type="text" id="subject" className="form-control" placeholder="E.g. Application Status Inquiry" required minLength={5} maxLength={100} pattern="^[\w\s.,?!'-]+$" title="Subject must be 5-100 characters and contain no special symbols" />
+                                <input type="text" id="subject" name="subject" className="form-control" placeholder="E.g. Application Status Inquiry" required minLength={5} maxLength={100} pattern="^[\w\s.,?!'-]+$" title="Subject must be 5-100 characters and contain no special symbols" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="message">Your Message</label>
-                                <textarea id="message" className="form-control" placeholder="Type your message here..." required minLength={20} maxLength={2000} title="Message must be at least 20 characters long"></textarea>
+                                <textarea id="message" name="message" className="form-control" placeholder="Type your message here..." required minLength={20} maxLength={2000} title="Message must be at least 20 characters long"></textarea>
                             </div>
 
-                            <button type="submit" className="btn-submit">Send Message <i className="fas fa-paper-plane"></i></button>
+                            <button type="submit" className={`btn-submit ${status === 'loading' ? 'loading' : ''}`} disabled={status === 'loading'}>
+                                {status === 'loading' ? 'Sending...' : 'Send Message'} <i className="fas fa-paper-plane"></i>
+                            </button>
                         </form>
                     </div>
 

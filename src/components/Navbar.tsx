@@ -24,8 +24,8 @@ export default function Navbar() {
     const navLinks = [
         { href: '/', label: 'Home' },
         { href: '/about', label: 'About' },
-        { href: '/core-team', label: 'Our Governing Body' },
-        { href: '/leadership', label: 'Leadership' },
+        { href: '/core-team', label: 'Governing Body' },
+        { href: '/leadership', label: 'Our Leadership' },
         { href: '/provincial-team', label: 'Provincial Team' },
         { href: '/contact', label: 'Contact Us' },
     ];
