@@ -117,7 +117,7 @@ Please format output using markdown (tables, lists, bold text) where appropriate
         { role: "system", content: systemPrompt },
         { role: "user", content: rawMessage }
       ],
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant",
       temperature: 0.5,
     });
 
