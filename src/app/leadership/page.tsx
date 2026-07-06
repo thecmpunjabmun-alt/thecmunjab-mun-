@@ -110,7 +110,8 @@ export default function Leadership() {
                             <ul>
                                 <li><span className="deputy-name">Muhammad Ahmad Khalid</span></li>
                                 <li><span className="deputy-name">Faiq Subhani</span></li>
-                                <li><span className="deputy-name">Muhammad Ibraheem Tarrar</span></li>
+                                 <li><span className="deputy-name">Muhammad Ibraheem Tarar</span></li>
+                                <li><span className="deputy-name">Muhammad Abdullah Atif</span></li>
                             </ul>
                         </div>
                     </div>
