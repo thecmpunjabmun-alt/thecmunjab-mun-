@@ -1,10 +1,40 @@
 import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
+import { Resend } from 'resend';
 
-// In-memory store for rate limiting
+// In-memory store for rate limiting and error tracking
 const rateLimitMap = new Map<string, { count: number, resetTime: number }>();
 const MAX_REQUESTS_PER_DAY = 5;
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+let hasSentFailureEmail = false; // Prevent spamming the admin inbox
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+function getFallbackResponse(message: string): string {
+  if (message.includes("apply") || message.includes("application") || message.includes("register") || message.includes("join") || message.includes("participate")) {
+    return "Applications for District Coordinators are currently **CLOSED** (deadline was May 9, 2026). Participant applications are currently on hold. Please keep an eye on our social media for updates.";
+  } else if (message.includes("event") || message.includes("pre launch") || message.includes("launch") || message.includes("when is")) {
+    return "Our exciting pre-launch event is happening on **July 10th at the Nawaz Shareef Center of Excellence**! Stay tuned to our social media for more details.";
+  } else if (message.includes("department") || message.includes("departments")) {
+    return "CM Punjab MUN has 7 distinct departments: Central Command, Media and IT, Academic Affairs, Coordination, Outreach, HR, and Operations.";
+  } else if (message.includes("coordinator") || message.includes("provincial team") || message.includes("team") || message.includes("who is")) {
+    return "We have dedicated District Coordinators across all 36 districts of Punjab. To see the full list of our amazing team members, please check out the **Provincial Team** page in our menu!";
+  } else if (message.includes("build") || message.includes("built") || message.includes("developer") || message.includes("creator")) {
+    return "I don't have any info regarding that. You can contact the officials at **thecmpunjabmun@gmail.com** for such information.";
+  } else if (message.includes("contact") || message.includes("email") || message.includes("whatsapp") || message.includes("phone") || message.includes("insta") || message.includes("reach")) {
+    return "You can contact us at **thecmpunjabmun@gmail.com** or visit the Nawaz Shareef Center of Excellence at 4 Shahrah Aiwan-e-Sanat-o-Tijarat, G.O.R. - I, Lahore. You can also reach us on WhatsApp at [+92 321 44787532](https://wa.me/9232144787532) or Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr).";
+  } else if (message.includes("benefit") || message.includes("why") || message.includes("perk") || message.includes("advantage")) {
+    return "Benefits of joining include Government Recognition, Skill Mastery (public speaking, diplomacy), Academic Edge, and Elite Networking.";
+  } else if (message.includes("program") || message.includes("about") || message.includes("what is") || message.includes("mun") || message.includes("cm punjab")) {
+    return "CM Punjab MUN is Pakistan's first-ever government-sponsored youth diplomacy initiative. It's an educational simulation of the UN, featuring a Training Program and Conference.";
+  } else if (message.includes("thank") || message.includes("thx") || message.includes("appreciate")) {
+    return "You're very welcome! If you have any other questions, feel free to ask.";
+  } else if (message.includes("hi") || message.includes("hello") || message.includes("hey") || message.includes("greetings")) {
+    return "Hello! I am operating in basic keyword mode right now. Please ask me about **applications**, **departments**, **our team**, **benefits**, or **contact info**.";
+  } else {
+    return "*(Basic Mode)* I didn't quite catch that. Try asking about **applications**, **events**, **the team**, **benefits**, or **contact info**. Alternatively, you can reach a real person at thecmpunjabmun@gmail.com or on Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr).";
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -29,36 +59,9 @@ export async function POST(req: Request) {
     const hasExceededFp = userFpRate && now <= userFpRate.resetTime && userFpRate.count >= MAX_REQUESTS_PER_DAY;
 
     if (hasExceededIp || hasExceededFp) {
-      // DUMB BOT LOGIC (Fallback)
-      let fallbackResponse = "";
-
-      if (message.includes("apply") || message.includes("application") || message.includes("register") || message.includes("join") || message.includes("participate")) {
-        fallbackResponse = "Applications for District Coordinators are currently **CLOSED** (deadline was May 9, 2026). Participant applications are currently on hold. Please keep an eye on our social media for updates.";
-      } else if (message.includes("event") || message.includes("pre launch") || message.includes("launch") || message.includes("when is")) {
-        fallbackResponse = "Our exciting pre-launch event is happening on **July 10th at the Nawaz Shareef Center of Excellence**! Stay tuned to our social media for more details.";
-      } else if (message.includes("department") || message.includes("departments")) {
-        fallbackResponse = "CM Punjab MUN has 7 distinct departments: Central Command, Media and IT, Academic Affairs, Coordination, Outreach, HR, and Operations.";
-      } else if (message.includes("coordinator") || message.includes("provincial team") || message.includes("team") || message.includes("who is")) {
-        fallbackResponse = "We have dedicated District Coordinators across all 36 districts of Punjab. To see the full list of our amazing team members, please check out the **Provincial Team** page in our menu!";
-      } else if (message.includes("build") || message.includes("built") || message.includes("developer") || message.includes("creator")) {
-        fallbackResponse = "I don't have any info regarding that. You can contact the officials at **thecmpunjabmun@gmail.com** for such information.";
-      } else if (message.includes("contact") || message.includes("email") || message.includes("whatsapp") || message.includes("phone") || message.includes("insta") || message.includes("reach")) {
-        fallbackResponse = "You can contact us at **thecmpunjabmun@gmail.com** or visit the Nawaz Shareef Center of Excellence at 4 Shahrah Aiwan-e-Sanat-o-Tijarat, G.O.R. - I, Lahore. You can also reach us on WhatsApp at [+92 321 44787532](https://wa.me/9232144787532) or Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr).";
-      } else if (message.includes("benefit") || message.includes("why") || message.includes("perk") || message.includes("advantage")) {
-        fallbackResponse = "Benefits of joining include Government Recognition, Skill Mastery (public speaking, diplomacy), Academic Edge, and Elite Networking.";
-      } else if (message.includes("program") || message.includes("about") || message.includes("what is") || message.includes("mun") || message.includes("cm punjab")) {
-        fallbackResponse = "CM Punjab MUN is Pakistan's first-ever government-sponsored youth diplomacy initiative. It's an educational simulation of the UN, featuring a Training Program and Conference.";
-      } else if (message.includes("thank") || message.includes("thx") || message.includes("appreciate")) {
-        fallbackResponse = "You're very welcome! If you have any other questions, feel free to ask.";
-      } else if (message.includes("hi") || message.includes("hello") || message.includes("hey") || message.includes("greetings")) {
-        fallbackResponse = "Hello! I am operating in basic keyword mode right now because the AI limit was reached. Please ask me about **applications**, **departments**, **our team**, **benefits**, or **contact info**.";
-      } else {
-        fallbackResponse = "*(Basic Mode)* I didn't quite catch that. Try asking about **applications**, **events**, **the team**, **benefits**, or **contact info**. Alternatively, you can reach a real person at thecmpunjabmun@gmail.com or on Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr).";
-      }
-
       return NextResponse.json(
         { 
-          response: fallbackResponse,
+          response: getFallbackResponse(message),
           remaining: 0
         }, 
         { status: 200 }
@@ -91,7 +94,7 @@ export async function POST(req: Request) {
     const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
+      throw new Error("GROQ_API_KEY is not configured.");
     }
 
     const groq = new Groq({ apiKey });
@@ -131,8 +134,34 @@ Please format output using markdown (tables, lists, bold text) where appropriate
     
     return NextResponse.json({ response: botText, remaining });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Chat API Route Error:", error);
-    return NextResponse.json({ response: "An error occurred connecting to the assistant. Please try again later." });
+    
+    // Attempt to notify the admin ONCE if the AI fails
+    if (!hasSentFailureEmail && process.env.RESEND_API_KEY) {
+      try {
+        hasSentFailureEmail = true;
+        await resend.emails.send({
+          from: 'Admin <onboarding@resend.dev>', // Keep as onboarding for now until domain is verified
+          to: 'thecmpunjabmun@gmail.com',
+          subject: 'URGENT: Chatbot AI Error on Website',
+          html: `<p>Hello Admin,</p><p>The AI chatbot on the MUN website encountered a critical error and has automatically fallen back to the basic keyword-based mode to protect the user experience.</p><p><strong>Error Details:</strong></p><pre>${error.message || error.toString()}</pre><p>Please check your Groq API Key or Netlify logs.</p>`
+        });
+      } catch (emailErr) {
+        console.error("Failed to send failure email:", emailErr);
+      }
+    }
+
+    // Fallback gracefully without telling the user there was an error
+    const body = await req.json().catch(() => ({}));
+    const message = (body.message || "").toLowerCase();
+    
+    return NextResponse.json(
+      { 
+        response: getFallbackResponse(message),
+        remaining: 0
+      }, 
+      { status: 200 }
+    );
   }
 }
