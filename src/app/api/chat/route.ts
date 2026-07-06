@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Groq from 'groq-sdk';
 
 // In-memory store for rate limiting
 const rateLimitMap = new Map<string, { count: number, resetTime: number }>();
@@ -88,14 +88,13 @@ export async function POST(req: Request) {
     const maxUsed = Math.max(ipCount, fpKey ? fpCount : 0);
     const remaining = Math.max(0, MAX_REQUESTS_PER_DAY - maxUsed);
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const groq = new Groq({ apiKey });
 
     const systemPrompt = `You are the official CM Punjab MUN virtual assistant. Be helpful, concise, and professional. Use the following information to answer user questions:
 - CM Punjab MUN is Pakistan's first-ever government-sponsored youth diplomacy initiative. It's an educational simulation of the UN.
@@ -113,15 +112,16 @@ export async function POST(req: Request) {
 - IMPORTANT: If you cannot answer a question based on this information, do not make up an answer. Instead, politely tell the user to contact us on our official Instagram page or reach out to a real person at thecmpunjabmun@gmail.com.
 Please format output using markdown (tables, lists, bold text) where appropriate.`;
 
-    const chatSession = model.startChat({
-      history: [
-        { role: "user", parts: [{ text: systemPrompt }] },
-        { role: "model", parts: [{ text: "Understood! I am ready to assist." }] }
-      ]
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: rawMessage }
+      ],
+      model: "llama3-8b-8192",
+      temperature: 0.5,
     });
 
-    const result = await chatSession.sendMessage(rawMessage);
-    const botText = result.response.text();
+    const botText = chatCompletion.choices[0]?.message?.content || "I am currently unable to answer. Please try again.";
     
     return NextResponse.json({ response: botText, remaining });
 
