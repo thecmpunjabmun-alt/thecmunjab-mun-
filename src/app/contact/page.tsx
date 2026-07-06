@@ -81,7 +81,7 @@ export default function Page() {
 
                         <div className="social-links">
 
-                            <a href="https://www.instagram.com/thecmpunjabmun/" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+                            <a href="https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
 
                         </div>
                     </div>

@@ -397,8 +397,8 @@ export default function ClientLogic() {
                     
                     igBtn.onclick = () => {
                         navigator.clipboard.writeText(formattedMsg).then(() => {
-                            alert("Message copied to clipboard! You can paste it into the Instagram chat.");
-                            window.open('https://www.instagram.com/thecmpunjabmun/', '_blank');
+                            alert("Message copied to clipboard!"); // Instagram click
+                            window.open('https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr', '_blank');
                         });
                     };
 

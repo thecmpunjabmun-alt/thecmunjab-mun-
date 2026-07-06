@@ -27,8 +27,8 @@ export default function Footer() {
                     <div className="footer-section">
                         <h4>About CM Punjab MUN</h4>
                         <p>Pakistan's first ever government Model United Nations program designed to empower and develop youth leaders.</p>
-                        <div className="footer-social">
-                            <a href="https://www.instagram.com/thecmpunjabmun/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i className="fab fa-instagram" aria-hidden="true"></i></a>
+                        <div className="social-icons fade-up">
+                            <a href="https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><i className="fab fa-instagram" aria-hidden="true"></i></a>
                         </div>
                     </div>
 

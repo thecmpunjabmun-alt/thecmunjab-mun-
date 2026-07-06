@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       } else if (message.includes("build") || message.includes("built") || message.includes("developer") || message.includes("creator")) {
         fallbackResponse = "I don't have any info regarding that. You can contact the officials at **thecmpunjabmun@gmail.com** for such information.";
       } else if (message.includes("contact") || message.includes("email") || message.includes("whatsapp") || message.includes("phone") || message.includes("insta") || message.includes("reach")) {
-        fallbackResponse = "You can contact us at **thecmpunjabmun@gmail.com** or visit the Nawaz Shareef Center of Excellence at 4 Shahrah Aiwan-e-Sanat-o-Tijarat, G.O.R. - I, Lahore. You can also reach us on WhatsApp at [+92 321 44787532](https://wa.me/9232144787532) or Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun/).";
+        fallbackResponse = "You can contact us at **thecmpunjabmun@gmail.com** or visit the Nawaz Shareef Center of Excellence at 4 Shahrah Aiwan-e-Sanat-o-Tijarat, G.O.R. - I, Lahore. You can also reach us on WhatsApp at [+92 321 44787532](https://wa.me/9232144787532) or Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr).";
       } else if (message.includes("benefit") || message.includes("why") || message.includes("perk") || message.includes("advantage")) {
         fallbackResponse = "Benefits of joining include Government Recognition, Skill Mastery (public speaking, diplomacy), Academic Edge, and Elite Networking.";
       } else if (message.includes("program") || message.includes("about") || message.includes("what is") || message.includes("mun") || message.includes("cm punjab")) {
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       } else if (message.includes("hi") || message.includes("hello") || message.includes("hey") || message.includes("greetings")) {
         fallbackResponse = "Hello! I am operating in basic keyword mode right now because the AI limit was reached. Please ask me about **applications**, **departments**, **our team**, **benefits**, or **contact info**.";
       } else {
-        fallbackResponse = "*(Basic Mode)* I didn't quite catch that. Try asking about **applications**, **events**, **the team**, **benefits**, or **contact info**. Alternatively, you can reach a real person at thecmpunjabmun@gmail.com or on Instagram [@thecmpunjabmun].";
+        fallbackResponse = "*(Basic Mode)* I didn't quite catch that. Try asking about **applications**, **events**, **the team**, **benefits**, or **contact info**. Alternatively, you can reach a real person at thecmpunjabmun@gmail.com or on Instagram [@thecmpunjabmun](https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr).";
       }
 
       return NextResponse.json(
@@ -115,7 +115,7 @@ Knowledge Base:
 - Core Values: Diplomacy, Innovation, Inclusivity, Global Awareness.
 - Contact: Nawaz Shareef Center of Excellence, 4 Shahrah Aiwan-e-Sanat-o-Tijarat, G.O.R. - I, Lahore. Email: thecmpunjabmun@gmail.com. Mon-Fri 9AM-5PM.
 - Development: If asked who built the site, state that you don't have any information regarding that and they should contact the officials for such information.
-- IMPORTANT: If you cannot answer a question based on this information, do not make up an answer. Instead, politely tell the user to contact us on our official Instagram page or reach out to a real person at thecmpunjabmun@gmail.com.
+- IMPORTANT: If you cannot answer a question based on this information, do not make up an answer. Instead, politely tell the user to contact us on our official Instagram page: https://www.instagram.com/thecmpunjabmun?igsh=MXJ5MzNnb2tla25pNg%3D%3D&utm_source=qr or reach out to a real person at thecmpunjabmun@gmail.com.
 Please format output using markdown (tables, lists, bold text) where appropriate.`;
 
     const chatCompletion = await groq.chat.completions.create({
