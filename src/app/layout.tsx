@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     template: "%s | CM Punjab MUN",
   },
   description: "Join CM Punjab Model United Nations - Pakistan's premier government-sponsored youth leadership and empowerment program. Participate in debates, training, and diplomacy.",
-  keywords: ["MUN", "Model United Nations", "Punjab", "Chief Minister Punjab", "Youth Leadership", "Debate", "Diplomacy", "Maryam Nawaz Sharif", "Youth Empowerment", "Pakistan MUN"],
+  keywords: ["CM Punjab MUN", "Punjab MUN", "The CM Punjab MUN", "MUN", "Model United Nations", "Punjab", "Chief Minister Punjab", "Youth Leadership", "Debate", "Diplomacy", "Maryam Nawaz Sharif", "Youth Empowerment", "Pakistan MUN"],
   authors: [{ name: "CM Punjab MUN" }],
   creator: "CM Punjab MUN",
   openGraph: {
     type: "website",
     locale: "en_PK",
-    url: "https://cmpunjabmun.com", // Adjust to the actual domain if different
+    url: "https://thecmpunjabmun.com", // Adjust to the actual domain if different
     title: "CM Punjab MUN | Turn Your Ambition into Achievement",
     description: "Pakistan's premier government-sponsored youth leadership and empowerment program.",
     siteName: "CM Punjab MUN",
