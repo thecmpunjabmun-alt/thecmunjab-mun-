@@ -30,6 +30,15 @@ export const metadata: Metadata = {
       },
     ],
   },
+  icons: {
+    icon: [
+      { url: '/logo.png', sizes: 'any' },
+      { url: '/logo-Photoroom.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/logo.png' },
+    ],
+  },
   twitter: {
     card: "summary_large_image",
     title: "CM Punjab MUN | Turn Your Ambition into Achievement",
