@@ -142,7 +142,7 @@ Please format output using markdown (tables, lists, bold text) where appropriate
       try {
         hasSentFailureEmail = true;
         await resend.emails.send({
-          from: 'Admin <onboarding@resend.dev>', // Keep as onboarding for now until domain is verified
+          from: 'Admin <no-reply@thecmpunjabmun.com>',
           to: 'thecmpunjabmun@gmail.com',
           subject: 'URGENT: Chatbot AI Error on Website',
           html: `<p>Hello Admin,</p><p>The AI chatbot on the MUN website encountered a critical error and has automatically fallen back to the basic keyword-based mode to protect the user experience.</p><p><strong>Error Details:</strong></p><pre>${error.message || error.toString()}</pre><p>Please check your Groq API Key or Netlify logs.</p>`
