@@ -187,6 +187,10 @@ export default function ClientLogic() {
                 document.body.appendChild(overlay);
                 
             } else {
+                if (form.id === 'contactForm') {
+                    return; // Let React's onSubmit in page.tsx handle the actual submission
+                }
+
                 e.preventDefault(); // Prevent page reload
                 
                 // Show loading state on button
