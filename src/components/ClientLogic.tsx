@@ -114,6 +114,8 @@ export default function ClientLogic() {
 
             if (isGibberish) {
                 e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
                 
                 // Create nice gibberish error modal
                 const overlay = document.createElement('div');

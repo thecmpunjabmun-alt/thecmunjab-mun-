@@ -16,17 +16,23 @@ export async function POST(req: Request) {
     // Basic Gibberish Detection
     const isGibberish = (text: string) => {
       if (!text) return false;
+      const val = text.trim();
+      
+      // Check if any single word is longer than 20 characters
+      const maxWordLength = Math.max(...val.split(/\s+/).map(w => w.length));
+      if (maxWordLength > 20) return true;
+      
       // Check for 6 or more consonants in a row (treats y as vowel for safety)
-      if (/[^aeiouy\s\d\W_]{6,}/i.test(text)) return true;
+      if (/[bcdfghjklmnpqrstvwxz]{6,}/i.test(val)) return true;
+      
       // Check for 5 or more of the same character in a row
-      if (/(.)\1{4,}/.test(text)) return true;
-      // Check for extremely long strings without spaces (20+ chars)
-      if (/[^\s]{25,}/.test(text)) return true;
+      if (/(.)\1{4,}/.test(val)) return true;
+      
       return false;
     };
 
     if (isGibberish(message) || isGibberish(subject) || isGibberish(firstName) || isGibberish(lastName)) {
-      return NextResponse.json({ error: "Please enter valid text." }, { status: 400 });
+      return NextResponse.json({ error: "Please enter valid text. Gibberish is not allowed." }, { status: 400 });
     }
 
     // 1. Send the email to the MUN Admin team
@@ -61,15 +67,31 @@ export async function POST(req: Request) {
         to: [email],
         subject: `Thank you for contacting CM Punjab MUN`,
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-            <h2 style="color: #1e3c20;">Hello ${firstName},</h2>
-            <p>Thank you for reaching out to CM Punjab MUN. We have received your message regarding <strong>"${subject}"</strong>.</p>
-            <p>Our team will look into your query and get back to you as soon as possible.</p>
-            <br/>
-            <p>Best Regards,</p>
-            <p><strong>The CM Punjab MUN Team</strong></p>
-            <hr style="border: 1px solid #eee; margin-top: 30px;" />
-            <p style="font-size: 12px; color: #888;"><em>You are receiving this automated email because you filled out the contact form on our official website (thecmpunjabmun.com).</em></p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h2 style="color: #1e3c20; margin-bottom: 5px;">CM Punjab MUN</h2>
+              <p style="color: #555; margin-top: 0;">Official Support Desk</p>
+            </div>
+            
+            <p>Dear <strong>${firstName}</strong>,</p>
+            
+            <p>Thank you for contacting the Chief Minister Punjab Model United Nations (CM Punjab MUN). We are writing to confirm that we have successfully received your inquiry regarding <strong>"${subject}"</strong>.</p>
+            
+            <div style="background-color: #f5f8f5; border-left: 4px solid #1e3c20; padding: 15px; margin: 20px 0;">
+              <p style="margin: 0;"><strong>What happens next?</strong><br/>
+              Our central focal team is currently reviewing your message. We aim to respond to all administrative and application queries within 24 to 48 hours. If your request requires urgent attention, rest assured it has been flagged for priority review.</p>
+            </div>
+            
+            <p>In the meantime, you may find answers to common questions in the FAQ section on our website.</p>
+            
+            <p>Best Regards,<br/>
+            <strong>The CM Punjab MUN Team</strong></p>
+            
+            <hr style="border: 1px solid #eee; margin-top: 30px; margin-bottom: 20px;" />
+            <p style="font-size: 12px; color: #888; text-align: center;">
+              <em>This is an automated confirmation message to let you know we received your request. Please do not reply directly to this email.</em><br/>
+              &copy; ${new Date().getFullYear()} CM Punjab MUN. All rights reserved.
+            </p>
           </div>
         `,
       });

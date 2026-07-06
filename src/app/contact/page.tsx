@@ -6,6 +6,7 @@ export default function Page() {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        if (e.nativeEvent.defaultPrevented) return;
         e.preventDefault();
         setStatus('loading');
         
