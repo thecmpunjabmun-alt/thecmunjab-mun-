@@ -40,6 +40,12 @@ export default function Preloader() {
           <img src="/logo-Photoroom.webp" alt="CM Punjab MUN Initiative" className="pulse-logo" />
         </div>
         
+        {/* Punchline */}
+        <div className="punchline">
+          <h2>CM PUNJAB MUN INITIATIVE</h2>
+          <p>A VISION FOR YOUTH EMPOWERMENT</p>
+        </div>
+        
       </div>
     </div>
   );

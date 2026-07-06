@@ -29,7 +29,7 @@ export default function Page() {
             setStatus('success');
             form.reset();
         } catch (error: any) {
-            console.error('Submission error:', error);
+            // Simply set the error message state so the user sees it in the UI
             setErrorMessage(error.message);
             setStatus('error');
         }
@@ -194,8 +194,9 @@ export default function Page() {
                                 <textarea id="message" name="message" className="form-control" placeholder="Type your message here..." required minLength={20} maxLength={2000} title="Message must be at least 20 characters long"></textarea>
                             </div>
 
-                            <button type="submit" className={`btn-submit ${status === 'loading' ? 'loading' : ''}`} disabled={status === 'loading'}>
-                                {status === 'loading' ? 'Sending...' : 'Send Message'} <i className="fas fa-paper-plane"></i>
+                            <button type="submit" className="btn-submit" disabled={status === 'loading'}>
+                                <span>{status === 'loading' ? 'Loading...' : 'Send Message'}</span>
+                                {status !== 'loading' && <i className="fas fa-paper-plane" style={{ marginLeft: '8px' }}></i>}
                             </button>
                         </form>
                     </div>

@@ -13,6 +13,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
+    // Basic Gibberish Detection
+    const isGibberish = (text: string) => {
+      if (!text) return false;
+      // Check for 6 or more consonants in a row (treats y as vowel for safety)
+      if (/[^aeiouy\s\d\W_]{6,}/i.test(text)) return true;
+      // Check for 5 or more of the same character in a row
+      if (/(.)\1{4,}/.test(text)) return true;
+      // Check for extremely long strings without spaces (20+ chars)
+      if (/[^\s]{25,}/.test(text)) return true;
+      return false;
+    };
+
+    if (isGibberish(message) || isGibberish(subject) || isGibberish(firstName) || isGibberish(lastName)) {
+      return NextResponse.json({ error: "Please enter valid text." }, { status: 400 });
+    }
+
     // 1. Send the email to the MUN Admin team
     const { data, error } = await resend.emails.send({
       from: 'CM Punjab MUN <no-reply@thecmpunjabmun.com>',
@@ -20,14 +36,16 @@ export async function POST(req: Request) {
       replyTo: email, // This allows the MUN team to just hit "Reply" in Gmail and it goes to the user
       subject: `New Contact Form Submission: ${subject}`,
       html: `
-        <h2>New Message from the CM Punjab MUN Website</h2>
-        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>District:</strong> ${district}</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <hr />
-        <h3>Message:</h3>
-        <p>${message.replace(/\n/g, '<br>')}</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+          <h2 style="color: #1e3c20;">New Message from the CM Punjab MUN Website</h2>
+          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>District:</strong> ${district}</p>
+          <p><strong>Subject:</strong> ${subject}</p>
+          <hr style="border: 1px solid #eee; margin: 20px 0;" />
+          <h3>Message:</h3>
+          <p style="background-color: #f9f9f9; padding: 15px; border-radius: 5px;">${message.replace(/\n/g, '<br>')}</p>
+        </div>
       `,
     });
 
@@ -44,7 +62,7 @@ export async function POST(req: Request) {
         subject: `Thank you for contacting CM Punjab MUN`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-            <h2>Hello ${firstName},</h2>
+            <h2 style="color: #1e3c20;">Hello ${firstName},</h2>
             <p>Thank you for reaching out to CM Punjab MUN. We have received your message regarding <strong>"${subject}"</strong>.</p>
             <p>Our team will look into your query and get back to you as soon as possible.</p>
             <br/>
