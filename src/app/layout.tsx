@@ -32,11 +32,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/logo.png', sizes: 'any' },
-      { url: '/logo-Photoroom.png', type: 'image/png' },
+      { url: '/logo-Photoroom.png', sizes: 'any' },
     ],
     apple: [
-      { url: '/logo.png' },
+      { url: '/logo-Photoroom.png' },
     ],
   },
   twitter: {
